@@ -1,0 +1,260 @@
+#include <iostream>
+#include<stdio.h>
+#include<random>
+#include<string>
+#include<vector>
+#include<chrono>
+using namespace std;
+using namespace std::chrono;
+
+//計算の答えが正しいかを確認するプログラム
+//getcharで得られる値はASCⅡコードであり、文字0を入力すると値48が得られるので、得られた値－48をすることで、入力値を得る
+void check(int q, int a) {
+    if (q - 48 == a) cout << "正解!!!\n" << endl;
+    else cout << "残念!!!\n" << endl;
+}
+
+//計算ゲーム
+void keisan(){
+    int s1;
+    int tmp1;
+    int i;
+
+    //乱数の取得
+    random_device engine;
+    uniform_int_distribution<unsigned> distl(0, 2);
+    i = distl(engine);
+
+    char cal[] = { 'cal1','cal2','cal3' };
+
+    cout << "[計算]\n" << endl;
+    cout << "今から計算問題を4問出すよ\n" << endl;
+    cout << "1問目\n" << endl;
+    
+    //１問目は３問のうちランダムで１問出題される。
+    if (cal[i] == cal[0]) {
+        cout << "2×3=?\n" << endl;
+        for (; (tmp1 = getchar()) != '\n';) {
+            s1 = tmp1;
+        }
+        check(s1, 6);
+    }
+
+    else if (cal[i] == cal[1]) {
+        cout << "54÷6=?\n" << endl;
+        for (; (tmp1 = getchar()) != '\n';) {
+            s1 = tmp1;
+        }
+        check(s1, 9);
+    }
+
+    else if (cal[i] == cal[2]) {
+        cout << "19-12=?\n" << endl;
+        for (; (tmp1 = getchar()) != '\n';) {
+            s1 = tmp1;
+        }
+        check(s1, 7);
+    }
+
+    //２問目以降はvectorに入っている数字を使って順番に出題される。
+    vector<int> v{ 12,32,81 };
+
+    auto it = v.begin();
+    cout << "2問目\n" << endl;
+    cout << *it << "÷6=?\n" << endl;
+
+    //以下のfor文がないと、Enterを押したときに以降すべてのgetcharが同時に動いてしまう。
+    for (; (tmp1 = getchar()) != '\n';) {
+        s1 = tmp1;
+    }
+    check(s1, 2);
+
+    ++it;
+    cout << "3問目\n" << endl;
+    cout << *it << "-29=?\n" << endl;
+    for (; (tmp1 = getchar()) != '\n';) {
+        s1 = tmp1;
+    }
+    check(s1, 3);
+
+    ++it;
+    cout << "4問目\n" << endl;
+    cout << *it << "÷9=?\n" << endl;
+    for (; (tmp1 = getchar()) != '\n';) {
+        s1 = tmp1;
+    }
+    check(s1, 9);
+    cout  << endl;
+    cout << "終了!!!\n" << endl;
+}
+
+//クイズ１のクラス
+class quiz1 {
+	string name;
+	int number;
+
+public:
+	void setname(const string& newname) { name = newname; }
+	string getname() { return name; }
+	void setnumber(int newnumber) { number = newnumber; }
+	int getnumber() { return number; }
+};
+
+//クイズ２のクラス
+class quiz2 {
+	string alphabet;
+	int finger;
+
+public:
+	void setalphabet(const string& newalphabet) { alphabet = newalphabet; }
+	string getalphabet() { return alphabet; }
+	void setfinger(int newfinger) { finger = newfinger; }
+	int getfinger() { return finger; }
+};
+
+//クイズゲーム
+void quiz() {
+    //クイズ１の要素
+	quiz1 ie;
+	ie.setname("家");
+	ie.setnumber(1);
+
+	quiz1 ike;
+	ike.setname("池");
+	ike.setnumber(11);
+
+	quiz1 ishi;
+	ishi.setname("石");
+	ishi.setnumber(3);
+
+	quiz1 iwa;
+	iwa.setname("岩");
+	iwa.setnumber(25);
+
+    //クイズ２の要素
+	quiz2 choki;
+	choki.setalphabet("C");
+	choki.setfinger(2);
+
+	quiz2 gu;
+	gu.setalphabet("G");
+	gu.setfinger(0);
+
+	quiz2 par;
+	par.setalphabet("P");
+	par.setfinger(5);
+
+    int s2;
+    int tmp2;
+
+    cout << "[クイズ]\n" << endl;
+	cout << "今から２問クイズを出すよ\n" << endl;
+	cout << "[第１問]\n" << endl;
+	cout << ie.getname() << "  →  " << ie.getnumber() << endl;
+	cout << ike.getname() << "  →  " << ike.getnumber() << endl;
+	cout << ishi.getname() << "  →  " << "?" << endl;
+	cout << iwa.getname() << "  →  " << iwa.getnumber() << "\n" << endl;
+	cout << "?に当てはまる数字は?\n" << endl;
+
+	for (; (tmp2 = getchar()) != '\n';) {
+		s2 = tmp2;;
+	}
+
+	if (s2 - 48 == 3) cout << "正解!!!\n" << endl;
+	else cout << "残念!!!\n" << "(数字はアルファベットの順番を表しているよ)\n" << endl;
+
+	cout << "[第２問]\n" << endl;
+	cout << choki.getalphabet() << " = " << choki.getfinger() << endl;
+	cout << gu.getalphabet() << " = " << gu.getfinger() << endl;
+	cout << par.getalphabet() << " = " << "?\n" << endl;
+	cout << "?に当てはまる数字は?\n" << endl;
+
+	for (; (tmp2 = getchar()) != '\n';) {
+		s2 = tmp2;;
+	}
+
+    if (s2 - 48 == 5) cout << "正解!!!\n" << endl;
+	else cout << "残念!!!\n" << "(アルファベットはそれぞれグー、チョキ、パーをあらわしているよ)\n" << endl;
+
+    cout << "終了!!!\n" << endl;
+}
+
+//ストップウォッチゲーム
+void time(){
+    int s3;
+    int tmp3;
+
+    cout << "[ストップウォッチ]\n" << endl;
+saisyo:
+    cout << "5.000秒ピッタリを目指そう!!!\n" << endl;
+    cout << "Enterを押してスタート!!!" << endl;
+
+    for (; (tmp3= getchar()) != '\n';) {
+        s3 = tmp3;
+    }
+    auto t0 = high_resolution_clock::now();
+
+    cout << "[スタート]\n" << endl;
+    cout << "Enterを押してストップ" << endl;
+    for (; (tmp3 = getchar()) != '\n';) {
+        s3 = tmp3;
+    }
+    auto t1 = high_resolution_clock::now();
+
+    cout << "[ストップ]\n" << endl;
+    cout << "タイムは" << duration_cast<milliseconds>(t1 - t0).count() / 1000. << "秒\n" << endl;
+
+    sentakusi:
+    cout << "もう一度挑戦する場合は1,やめる場合は0を押してください。\n" << endl;
+
+    for (; (tmp3 = getchar()) != '\n';) {
+        s3 = tmp3;;
+    }
+    if (s3 - 48 == 1) goto saisyo;
+    else if (s3 - 48 == 0) cout << "終了!!!\n" << endl;
+    else goto sentakusi;
+
+}
+
+//main関数
+int main(){
+    cout << "このプログラムではEnterを押すと進みます。また、２桁以上の数字を入力しないでください。\n" << endl;
+
+start:
+    cout << "計算は 1 ,クイズは 2 ,ストップウォッチは 3 を入力してください。終了する場合は 0 を押してください。\n" << endl;
+
+    int s;
+    int tmp;
+
+    for (; (tmp = getchar()) != '\n';) {
+        s = tmp;;
+    }
+    if (s - 48 == 1) {
+        keisan();
+        cout << "スタート画面に戻ります\n" << endl;
+        goto start;
+    }
+    else if (s - 48 == 2) {
+        quiz();
+        cout << "スタート画面に戻ります\n" << endl;
+        goto start;
+    }
+    else if (s - 48 == 3) {
+        time();
+        cout << "スタート画面に戻ります\n" << endl;
+        goto start;
+    }
+    else if (s - 48 == 0) {
+        cout << "終了します。お疲れさまでした。また遊んでね。\n" << endl;
+    }
+    else goto start;
+}
+
+
+
+
+
+
+
+
+
